@@ -14,8 +14,10 @@ const firebaseConfig = {
 
 export const isFirebaseConfigured = Object.values(firebaseConfig).every(Boolean);
 
-const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
+export const db = app ? getFirestore(app) : null;
 
 // Analytics only works in browser with cookies allowed
-isSupported().then((yes) => { if (yes) getAnalytics(app); });
+if (app) {
+  isSupported().then((yes) => { if (yes) getAnalytics(app); });
+}
